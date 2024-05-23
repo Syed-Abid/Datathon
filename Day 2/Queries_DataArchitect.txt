@@ -1,0 +1,89 @@
+/*  Query1: Fetches contents that is relevant to a particular user (can be used as news feed posts) */
+db.getCollection('Content').aggregate(
+  [
+    {
+      $match: {
+        $or: [
+          {
+            liked_by: '662e01d74027d5256036c8e1' // replace it with your user id
+          },
+          {
+            'comments.author_id': '662e01d74027d5256036c8e1' // replace it with your user id
+          }
+        ]
+      }
+    },
+    {
+      $project: {
+        title: 1,
+        type: 1,
+        author_id: 1,
+        creation_date: 1,
+        body: 1,
+        media_link: 1
+      }
+    },
+    { $sort: { creation_date: -1 } }
+  ]
+);
+
+
+
+/* Query2: Fetches most liked contents order in descending */
+db.Content.aggregate([
+    { $project: { title: 1, body: 1, comments: 1, likesCount: { $size: "$liked_by" } } },
+    { $sort: { likesCount: -1 } }
+])
+
+
+
+/* Query3 (a): Significant Contributors (Users with most content) */
+db.Content.aggregate([
+    { $group: { _id: "$author_id", post_count: { $sum: 1 } } },
+    {
+      $lookup: {
+          from: "User",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user_info"
+      }
+    },
+    { $unwind: "$user_info" },
+    { $sort: { post_count: -1 } }
+]);
+/* Query3 (b): (Influential Users) User with most followers */
+db.User.aggregate([
+    { $sort: { followers_count: -1 } }
+]);
+
+/*  Query4 (a): Fetches popular types of post */
+db.Content.aggregate([
+    { $group: { _id: "$type", count: { $sum: 1 } } },
+    { $sort: { count: -1 } }
+]);
+
+/* Query4 (b): Content with most interaction (likes + comments) */
+db.Content.aggregate([
+    { 
+      $project: { 
+        title: 1,
+        body: 1,
+        type: 1,
+        comments: 1,
+        interaction: { 
+          $add: [ 
+            { $size: "$liked_by" },
+            { $size: "$comments" } 
+          ] 
+        } 
+      } 
+    },
+    { $sort: { interaction: -1 } }
+]);
+
+
+/* Query 5: Most reported contents */
+db.Content.aggregate([
+    { $project: { title: 1, body: 1, author_id: 1, reportCount: { $size: "$reported_by" } } },
+    { $sort: { reportCount: -1 } }
+]);

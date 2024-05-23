@@ -1,0 +1,210 @@
+db.createCollection("User", {
+    "capped": false,
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "title": "User",
+            "properties": {
+                "_id": {
+                    "bsonType": "objectId"
+                },
+                "username": {
+                    "bsonType": "string"
+                },
+                "email": {
+                    "bsonType": "string"
+                },
+                "password": {
+                    "bsonType": "string"
+                },
+                "full_name": {
+                    "bsonType": "string"
+                },
+                "bio": {
+                    "bsonType": "string"
+                },
+                "location": {
+                    "bsonType": "object",
+                    "additionalProperties": false
+                },
+                "education": {
+                    "bsonType": "string"
+                },
+                "profile_picture": {
+                    "bsonType": "string"
+                },
+                "friends": {
+                    "bsonType": "array",
+                    "additionalItems": true,
+                    "items": {
+                        "bsonType": "objectId"
+                    }
+                },
+                "followings": {
+                    "bsonType": "array",
+                    "additionalItems": true,
+                    "items": {
+                        "bsonType": "objectId",
+                    }
+                },
+                "followers_count": {
+                    "bsonType": "int"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "validationLevel": "off",
+    "validationAction": "warn"
+});
+
+
+
+db.createCollection("Content", {
+    "capped": false,
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "title": "Content",
+            "properties": {
+                "_id": {
+                    "bsonType": "objectId"
+                },
+                "title": {
+                    "bsonType": "string"
+                },
+                "type": {
+                    "bsonType": "string",
+                    "enum": [
+                        "image",
+                        "video",
+                        "article"
+                    ]
+                },
+                "author_id": {
+                    "bsonType": "string",
+                    "title": "author"
+                },
+                "creation_date": {
+                    "bsonType": "date"
+                },
+                "body": {
+                    "bsonType": "string"
+                },
+                "liked_by": {
+                    "bsonType": "array",
+                    "additionalItems": true,
+                    "items": {
+                        "bsonType": "objectId"
+                    }
+                },
+                "reported_by": {
+                    "bsonType": "array",
+                    "additionalItems": true,
+                    "items": {
+                        "bsonType": "string"
+                    }
+                },
+                "media_link": {
+                    "bsonType": "string"
+                },
+                "comments": {
+                    "bsonType": "array",
+                    "additionalItems": true,
+                    "items": {
+                        "bsonType": "object",
+                        "properties": {
+                            "_id": {
+                                "bsonType": "objectId"
+                            },
+                            "author_id": {
+                                "bsonType": "objectId"
+                            },
+                            "message": {
+                                "bsonType": "string"
+                            },
+                            "like_count": {
+                                "bsonType": "int"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "additionalProperties": false
+        } 
+    },
+    "validationLevel": "off",
+    "validationAction": "warn"
+});
+
+db.createCollection("Analytics", {
+    "capped": false,
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "title": "Analytics",
+            "properties": {
+                "_id": {
+                    "bsonType": "objectId"
+                },
+                "country": {
+                    "bsonType": "string"
+                },
+                "total_post": {
+                    "bsonType": "int"
+                },
+                "total_user": {
+                    "bsonType": "int"
+                }
+            },
+            "required": ["country", "total_post"],
+            "additionalProperties": false
+        }
+    },
+    "validationLevel": "off",
+    "validationAction": "warn"
+});
+
+db.createCollection("Project", {
+    "capped": false,
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "title": "Project",
+            "properties": {
+                "_id": {
+                    "bsonType": "objectId"
+                },
+                "title": {
+                    "bsonType": "string"
+                },
+                "owner_id": {
+                    "bsonType": "objectId"
+                },
+                "description": {
+                    "bsonType": "string"
+                },
+                "status": {
+                    "bsonType": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "completed"
+                    ]
+                },
+                "team": {
+                    "bsonType": "array",
+                    "additionalItems": true,
+                    "items": {
+                        "bsonType": "objectId"
+                    }
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "validationLevel": "off",
+    "validationAction": "warn"
+});
+
