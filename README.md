@@ -39,3 +39,9 @@ Welcome to the **Datathon 2024** repository! This project showcases my participa
 - [Add any notable results, e.g., "Ranked 2nd out of 50 teams"]
 - [Highlight creative solutions or methodologies used]
 
+## 📬 Contact
+
+Questions or suggestions? Reach out to me:
+
+- **Syed Abid Hassan**
+- **Email:** [abidhassanjaffri31@gmail.com](mailto:abidhassanjaffri31@gmail.com)
